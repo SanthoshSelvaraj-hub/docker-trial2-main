@@ -1,9 +1,11 @@
+FROM node:12 as build-step
+WORKDIR /app
+COPY package.json /app
+RUN npm install 
+COPY . /app
+RUN npm run build
+
+
 FROM node:12
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-COPY package.json /usr/src/app
-RUN npm cache clean --force
-RUN npm install && npm run build
-COPY . /usr/src/app
-EXPOSE 4200
-CMD ["npm", "start"]
+COPY --from=build-step app/dist/taskZero /usr/share/node/html
+ 

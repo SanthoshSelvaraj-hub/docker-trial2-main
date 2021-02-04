@@ -1,9 +1,6 @@
-FROM node:12
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-COPY package.json /usr/src/app
-RUN npm cache clean --force
+FROM node:12 as build-step
+WORKDIR /app
+COPY package.json /app
 RUN npm install
-COPY . /usr/src/app
-EXPOSE 3000
-CMD ["node","index.js"]
+COPY . /app
+CMD [ "node","index.js" ]
